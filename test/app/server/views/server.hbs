@@ -1,0 +1,25 @@
+<main>
+  <h1>auth</h1>
+
+  {{#if authenticated}}
+    <p>Hey {{session.name}},</p>
+    <p>Ready to <a href="/auth/logout" target="_self">Logout</a>?</p>
+    <p>
+      Or see <a href="/api/users/me">your user doc</a>.
+    </p>
+  {{else}}
+    <p>This is a test mini-site / playground for the auth lib.
+       You can signup / login and that's about it.</p>
+    <a href="/auth/github/callback" target="_self" class="btn gh" style="background:orange">
+      <img src="https://static.airpair.com/img/icons/gh-white.png" />
+    Signin with GitHub</a>
+  {{/if}}
+</main>
+
+
+<style>
+
+ .btn.gh { position:relative;display:block;background:#ce5424;height:40px;padding:25px 5px 5px 100px;width:200px;color:white;border-radius:10px;font-weight:bold }
+ .btn.gh img { position:absolute;left:5px;top:10px; }
+
+</style>

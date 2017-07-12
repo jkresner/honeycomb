@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html ng-app="AUTH" ng-strict-di>
+<head>
+  <title>meanair-auth</title>
+  <meta charset="UTF-8" />
+  <style type="text/css">
+    body { padding:50px;font:14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+    header { background:black;display:block }
+    header a { color:white; }
+    header li { display:inline-block;padding:10px;height:20px; }
+    header .fk iframe { padding-top:10px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/"></a>
+  <ul>
+    <li class="ps"><a href="/calendar">Calendar</a></li>
+    {{#if authenticated}}
+      <li class="lo"><a href="/auth/logout">Logout</a></li>
+      <li class="lo"><a href="/auth/stackoverflow/callback">Link SO</a></li>
+    {{else}}
+      <li class="lo"><a href="/auth/github/callback">Login</a></li>
+    {{/if}}
+  </ul>
+</header>
+
+<div class="main-wrap">
+  {{{body}}}
+</div>
+
+</body>
+</html>

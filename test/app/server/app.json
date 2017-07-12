@@ -1,0 +1,58 @@
+{
+  "appDir":                  "../",
+  "auth": {
+    "appKey":                "auth-ex1",
+    "api": {
+      "users": {
+        "unlinkOAuth":      true,
+        "updatePrimaryEmail":true
+      }
+    },
+    "oauth": {
+      "github": {
+        "short":             "gh",
+        "signup":            true,
+        "login":             true,
+        "unlink":            false,
+        "logic":             "oauth",
+        "clientID":          "{{required}}",
+        "clientSecret":      "{{required}}",
+        "emails":            true,
+        "userAgent":         "{{required}}"
+      },
+      "stackoverflow": {
+        "short":             "so",
+        "logic":             "oauth",
+        "clientID":          "{{required}}",
+        "clientSecret":      "{{required}}",
+        "key":               "{{required}}"
+      },
+      "linkedin": {
+        "short":             "in",
+        "logic":             "oauth",
+        "clientID":          "{{required}}",
+        "clientSecret":      "{{required}}",
+        "profile":           "picture-url,num-connections",
+        "scope":             ["r_basicprofile"]
+      }
+    },
+    "password": {
+      "login":               "password",
+      "signup":              false,
+      "reset":               false,
+      "set":                 false
+    }
+  },
+  "comm":                    "{{undefine}}",
+  "middleware": {
+    "session": {
+      "authdData":           "_id name",
+      "store":               { "collection": "sessions-ex1" }
+    }
+  },
+  "model": {
+    "analytics": {
+      "mongoUrl":            "{{required}}"
+    }
+  }
+}

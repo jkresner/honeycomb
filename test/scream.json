@@ -1,0 +1,15 @@
+{
+  "mongo": {
+    "collections":        ["users","experts","tags","auths","orders"],
+    "seed": {
+      "without":          "FIXTURE.users.tst1",
+      "timeout":          30000
+    },
+    "url":                "mongodb://localhost/honey-test"
+  },
+  "paths": {
+    "bson":               "data/bson",
+    "fixtures":           "data/fixtures",
+    "specs":              "specs"
+  }
+}
