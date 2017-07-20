@@ -18,7 +18,7 @@ opts =
     fn: (data, cb) ->
       {_json,provider} = data
       token = "test" # _.get(profile,"tokens.#{config.auth.appKey}.token") || "test"
-      # $log('oauth'.white, config.test.auth, data)
+      # $log('oauth'.white, config.test.auth.oauth, data)
       config.test.auth.oauth.fn[provider].call @, provider, _json, {token}, cb
 
 

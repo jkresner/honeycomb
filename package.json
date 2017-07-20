@@ -1,6 +1,6 @@
 {
   "name": "honeycombjs",
-  "version": "0.0.1",
+  "version": "0.9.0",
   "description": "Write node.js apps fast",
   "author": "Jonathon Kresner",
   "license": "MIT",
@@ -12,7 +12,7 @@
   "dependencies": {
     "aws-sdk": "2.81.0",
     "body-parser": "1.17.2",
-    "bcrypt": "1.0.x",
+    "bcrypt": "1.0.2",
     "colors": "1.1.2",
     "cookie-parser": "1.4.3",
     "connect-mongo": "1.3.2",

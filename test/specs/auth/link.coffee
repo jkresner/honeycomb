@@ -41,7 +41,7 @@ unlink = ->
     {tst11} = FIXTURE.users
     DB.ensureDoc 'User', tst11, ->
       LOGIN 'tst11', (s) ->
-        EXPECT.equalIds(s._id, tst11._id)
+        expect(s._id).eqId(tst11._id)
         DB.docById 'User', tst11._id, (u0db) ->
           expect(u0db.auth.gh).to.exist
           expect(u0db.auth.so).to.exist

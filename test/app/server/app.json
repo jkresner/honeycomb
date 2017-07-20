@@ -44,6 +44,9 @@
     }
   },
   "comm":                    "{{undefine}}",
+  "log":{
+    "appKey":                "HON"
+  },
   "middleware": {
     "session": {
       "authdData":           "_id name",

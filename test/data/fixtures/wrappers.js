@@ -19,6 +19,10 @@ module.exports = {
 
   gh_emails_tst5: [
     {email:"airpairtest5@gmail.com",primary:true,verified:true}
-  ]
+  ],
+
+  comm_ses_err: {
+    messageId:'blah'
+  },
 
 }
