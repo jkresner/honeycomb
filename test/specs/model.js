@@ -3,7 +3,7 @@ module.exports = () =>
   before(()=>{
     global.DAL = honey.model.DAL
     global.Auth = DAL.Auth
-    global.User = DAL.User
+    global.Author = DAL.Author
     global.Tag = DAL.Tag
     global.Org = DAL.Org
     global.Order = DAL.Order
@@ -13,7 +13,7 @@ module.exports = () =>
   after(()=>{
     delete global.DAL
     delete global.Auth
-    delete global.User
+    delete global.Author
     delete global.Tag
     delete global.Org
     delete global.Order

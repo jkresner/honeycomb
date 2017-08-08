@@ -41,7 +41,8 @@ module.exports = {
         token: 'aa1905fec86e484072fd210acfd27537c65faefa'
       }
     },
-    "tagId" : ObjectId("5149dccb5fc6390200000013")
+    "tagId" : ObjectId("5149dccb5fc6390200000013"),
+    "log": { "history" : [] }
   },
 
 
@@ -80,7 +81,8 @@ module.exports = {
            private_repos: 0 },
         token: '261d9670b74fed23b2098a55d9bccf55a7526661'
       }
-    }
+    },
+    "log": { "history" : [] }
   },
 
 
@@ -138,7 +140,8 @@ module.exports = {
         "id" : "d9YF1111",
         "firstName" : "Airey"
       }
-    }
+    },
+    "log": { "history" : [] }
   },
 
 
@@ -179,7 +182,8 @@ module.exports = {
         token: 'bbb90666686e484072fd210acfd27537c65faefa'
       }
     },
-    "username" : "jkres"
+    "username" : "jkres",
+    "log": { "history" : [] }
   },
 
 
@@ -224,8 +228,8 @@ module.exports = {
     },
     "username" : "jkresnerau",
     "scope": [],
-    "meta": {
-      "activity" : [
+    "log": {
+      "history" : [
           {
               "action" : "signup",
               "_id" : ObjectId("5612a3cbb533e44fa42ce276"),
@@ -236,7 +240,7 @@ module.exports = {
               }
           }
       ],
-      "lastTouch" : {
+      "last" : {
           "action" : "signup",
           "_id" : ObjectId("5612a3cbb533e44fa42ce276"),
           "utc" : ISODate("2015-10-05T16:22:35.510Z"),

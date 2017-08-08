@@ -18,12 +18,12 @@ basic = ->
 
   IT "can unset a nested property", ->
     {tst11} = FIXTURE.users
-    DB.ensureDoc 'User', tst11, (e,r) ->
-      EXPECT.equalIds(r._id, tst11._id)
-      User.getById tst11._id, (e0, u0) ->
+    DB.ensureDoc 'Author', tst11, (e,r) ->
+      expect(r._id).eqId(tst11._id)
+      Author.getById tst11._id, (e0, u0) ->
         EXPECT.equalIds(u0._id,tst11._id)
         expect(u0.auth.gh.company).to.equal('Unset co.')
-        User.updateUnset tst11._id, ['auth.gh.company'], (e1, u1) ->
+        Author.updateUnset tst11._id, ['auth.gh.company'], (e1, u1) ->
           EXPECT.equalIds(u1._id,tst11._id)
           expect(u1.auth.gh.id).to.equal(u0.auth.gh.id)
           expect(u1.auth.gh.company).to.be.undefined

@@ -5,6 +5,7 @@ module.exports = () => {
 
   beforeEach(function(){
     for (var envVar in process.env) delete process.env[envVar]
+    process.env.HTTP_STATIC_FAVICON_ROOT = 'ico'
   })
 
 
@@ -42,7 +43,7 @@ module.exports = () => {
     expect(cfg2.auth.oauth.github.scope[0]).to.equal('user')
     expect(cfg2.http.port).to.equal(3333)
     expect(cfg2.http.host).to.equal('http://localhost:3333')
-    expect(cfg2.http.static.dirs[0]).to.inc('web/public')
+    expect(cfg2.http.static.dirs[0]).to.inc('/public')
     expect(cfg2.model.domain.mongoUrl).to.equal('mongo://ghtest2/db')
     expect(cfg2.middleware.session.store.collection).to.equal('sessions-test2')
     DONE()
@@ -200,8 +201,8 @@ module.exports = () => {
 
     process.env.HTTP_STATIC_MANIFEST = 'rev.json'
     var cfg14b = Configure(join(__dirname, '../../data/fixtures/app14'), 'dev')
-    expect(cfg14b.http.static.bundles["js/ang1.js"]).to.equal("js/ang1-14a26f2a4e.js")
-    expect(cfg14b.http.static.bundles["css/app.css"]).to.equal("css/app-0d80f1fb17.css")
+    expect(cfg14b.http.static.bundles["js/ang1.js"]).to.equal("/js/ang1-14a26f2a4e.js")
+    expect(cfg14b.http.static.bundles["css/app.css"]).to.equal("/css/app-0d80f1fb17.css")
 
     DONE()
   })

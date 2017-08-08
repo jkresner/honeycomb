@@ -26,11 +26,29 @@ individuals = ->
         expect(r.photos[0].type).to.equal('github')
         expect(r.name).to.equal("Jonathon Kresner")
         expect(r.auth.gh.id).to.equal(979542)
-        # expect(r.meta.notes.length).to.equal(0)
-        expect(r.meta.activity.length).to.equal(1)
-        expect(r.meta.lastTouch.action).to.equal('signup')
-        EXPECT.equalIdAttrs(r.meta.lastTouch, r.meta.activity[0])
+        expect(r.log.history.length).to.equal(1)
+        expect(r.log.last.action).to.equal('signup')
+        EXPECT.equalIdAttrs(r.log.last, r.log.history[0])
         DONE()
+
+  
+  IT "Facebook signup & login creates one user", ->
+    {fb_jk} = FIXTURE.oauth
+    opts = status: 200, contentType: /json/
+    DB.removeDocs 'User', { 'emails.value': fb_jk.email }, -> 
+      OAUTH {_json:fb_jk,provider:'facebook'}, opts, (s1) ->
+        jkId = s1._id
+        expect(s1.name).to.equal(fb_jk.name)        
+        DB.docById 'User', jkId, (u1) -> 
+          expect(u1._id).eqId(jkId)
+          expect(u1.auth).to.exist
+          expect(u1.auth.fb).to.exist
+          expect(u1.auth.fb.id).to.equal(fb_jk.id)
+          LOGOUT ->
+            OAUTH {_json:fb_jk,provider:'facebook'}, opts, (s2) ->
+              expect(s1._id).eqId(s2._id)
+              DONE()
+  
 
 
   it "Saves correct cohort info for new users"

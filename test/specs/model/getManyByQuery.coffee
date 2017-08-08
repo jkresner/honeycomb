@@ -10,13 +10,13 @@ queries = ->
 
 
   IT 'Gets one by key as string value', ->
-    User.getManyByQuery {_id:'54551be15f221efa17111111'}, (e, r) ->
+    Author.getManyByQuery {_id:'54551be15f221efa17111111'}, (e, r) ->
       expect(r.length).to.equal(1)
       DONE()
 
 
   IT 'Gets one by key as ObjectId', ->
-    User.getManyByQuery {_id:ObjectId('54551be15f221efa17111111')}, (e, r) ->
+    Author.getManyByQuery {_id:ObjectId('54551be15f221efa17111111')}, (e, r) ->
       expect(r.length).to.equal(1)
       DONE()
 

@@ -26,7 +26,7 @@ link = ->
           expect(u1db.auth.gh).to.exist
           expect(u1db.auth.so).to.be.undefined
           OAUTH gh_two, {status:401,contentType:/json/}, (e) ->
-            expect(e.message).inc("Unlink existing")
+            expect(e.message).inc("Session overwrite disallowed")
             DB.docById 'User', tst1._id, (u2db) ->
               expect(u2db.auth.gh).to.exist
               expect(u2db.auth.so).to.be.undefined

@@ -23,13 +23,4 @@ module.exports = () => DESCRIBE("Util", function() {
   })
 
 
-  IT('idToMoment', function() {
-    var oid = ObjectId("5609a8e59d438f11000e50f7")
-    var oMoment = Util.toMoment(oid)
-    expect(oMoment.utc().format("YY.MM.DD HH:MM")).to.equal("15.09.28 20:09")
-    expect(Util.toMoment(oid, "YY.MM.DD HH:MM")).starts("15.09.")
-    DONE()
-  })
-
-
 })

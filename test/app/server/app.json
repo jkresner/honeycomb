@@ -20,6 +20,14 @@
         "emails":            true,
         "userAgent":         "{{required}}"
       },
+      "facebook": {
+        "short":             "fb",
+        "signup":            true,
+        "login":             true,
+        "logic":             "oauth",
+        "clientID":          "{{required}}",
+        "clientSecret":      "{{required}}"
+      },      
       "stackoverflow": {
         "short":             "so",
         "logic":             "oauth",

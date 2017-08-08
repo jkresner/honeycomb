@@ -1,5 +1,20 @@
 module.exports = {
 
+  fb_jk: { 
+    id: '123405405104',
+    name: 'Jonathon Kresner',
+    last_name: 'Kresner',
+    first_name: 'Jonathon',
+    gender: 'male',
+    link: 'https://www.facebook.com/app_scoped_user_id/123405405104/',
+    email: 'jk@jk.com',
+    picture: { 
+      data: { 
+        is_silhouette: false,
+        url: 'https://scontent.xx.fbcdn.net/v/t1.0-1/c13.0.50.50/p50x50/1384018_639194289544_253203027_n.jpg?oh=a5d95c0db94aad9ff8f1d5dd37579726&oe=59C970B4' 
+      } 
+    } 
+  },
 
 
   gh_two: {
