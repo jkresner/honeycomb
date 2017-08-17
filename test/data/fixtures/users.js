@@ -218,36 +218,19 @@ module.exports = {
         owned_private_repos: 0,
         disk_usage: 0,
         collaborators: 0,
-        plan:
-         { name: 'free',
-           space: 976562499,
-           collaborators: 0,
-           private_repos: 0 },
-        token: '34f4c2e52eaf0134a669a771255668a02dacc629'
+        plan: { name: 'free', space: 976562499, collaborators: 0, private_repos: 0 },
+        token: '34f4c2e52eaf0134a669a771255668a02dacd122'
       }
     },
     "username" : "jkresnerau",
-    "scope": [],
     "log": {
-      "history" : [
-          {
-              "action" : "signup",
-              "_id" : ObjectId("5612a3cbb533e44fa42ce276"),
-              "utc" : ISODate("2015-10-05T16:22:35.510Z"),
-              "by" : {
-                  "_id" : ObjectId("549342348f8c80333cccc6c2"),
-                  "name" : "Jonathon Yahoo"
-              }
-          }
-      ],
+      "history" : [ { "_id" : ObjectId("5612a3cbb533e44fa42ce276"),
+                      "action" : "signup",
+             "by" : { "_id" : ObjectId("549342348f8c80333cccc6c2"), "name" : "Jonathon Yahoo" } }],
       "last" : {
-          "action" : "signup",
-          "_id" : ObjectId("5612a3cbb533e44fa42ce276"),
-          "utc" : ISODate("2015-10-05T16:22:35.510Z"),
-          "by" : {
-              "_id" : ObjectId("549342348f8c80333cccc6c2"),
-              "name" : "Jonathon Yahoo"
-          }
+        "_id" : ObjectId("5612a3cbb533e44fa42ce276"),
+        "action" : "signup",
+        "by" : { "_id" : ObjectId("549342348f8c80333cccc6c2"), "name" : "Jonathon Yahoo" }
       }
     }
   },

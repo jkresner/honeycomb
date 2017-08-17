@@ -3,13 +3,13 @@
 anon = ->
 
 
-  IT '/ OK', ->
-    PAGE '/', { authenticated: false }, (html) ->
+  IT '[200] /', ->
+    PAGE '/', { session: null }, (html) ->
       expect(html).inc 'Signin'
       DONE()
 
-  IT '/calendar 302 to /?returnTo=/calendar', ->
-    PAGE '/calendar', { authenticated: false, status: 302 }, (text) ->
+  IT '[302] /calendar => /?returnTo=/calendar', ->
+    REDIRECT '/calendar', { session: null }, (text) ->
       expect(text).inc 'Redirecting to /?returnTo=/calendar'
       DONE()
 
@@ -17,16 +17,16 @@ anon = ->
 authd = ->
 
 
-  IT '/ 302 to /calendar', ->
+  IT '[302] / => /calendar', ->
     LOGIN {key:'jkg',oaEmails:''}, (session) ->
       expect(session._id).to.exist
       expect(session.name).to.equal('Jonathon Kresner')
-      PAGE '/', { status: 302 }, (text) ->
+      REDIRECT '/', {}, (text) ->
         expect(text).inc 'Redirecting to /calendar'
         DONE()
 
 
-  IT '/calendar OK', ->
+  IT '[200] /calendar', ->
     LOGIN 'jkg', (session) ->
       expect(session._id).to.exist
       PAGE '/calendar', { status: 200 }, (text) ->

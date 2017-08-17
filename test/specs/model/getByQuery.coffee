@@ -5,7 +5,7 @@ basic = ->
 
   IT 'Gets one user by github id', ->
     Author.getByQuery { 'auth.gh.id': 11261012 }, null, (e, r) ->
-      EXPECT.equalIds(r._id, FIXTURE.users.tst1._id)
+      expect(r._id).eqId(FIXTURE.users.tst1._id)
       DONE()
 
 

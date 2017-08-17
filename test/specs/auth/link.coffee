@@ -5,11 +5,12 @@ link = ->
     {so_apteam} = FIXTURE.oauth
     tst1 = FIXTURE.clone('users.tst1')
     DB.ensureDoc 'User', tst1, ->
-      LOGIN 'tst1', (s) ->
+      LOGIN 'tst1', { contentType: /json/ }, (s) ->
+        expect(s).eqId(tst1)
         DB.docById 'User', tst1._id, (u1db) ->
           expect(u1db.auth.gh).to.exist
           expect(u1db.auth.so).to.be.undefined
-          OAUTH so_apteam, ->
+          OAUTH so_apteam, { status: 302 }, (text) ->
             DB.docById 'User', tst1._id, (u2db) ->
               expect(u2db.auth.gh).to.exist
               expect(u2db.auth.so).to.exist
@@ -25,8 +26,8 @@ link = ->
         DB.docById 'User', tst1._id, (u1db) ->
           expect(u1db.auth.gh).to.exist
           expect(u1db.auth.so).to.be.undefined
-          OAUTH gh_two, {status:401,contentType:/json/}, (e) ->
-            expect(e.message).inc("Session overwrite disallowed")
+          OAUTH gh_two, {status:401,accept:"text/html"}, (html) ->
+            expect(html).inc("Session overwrite disallowed")
             DB.docById 'User', tst1._id, (u2db) ->
               expect(u2db.auth.gh).to.exist
               expect(u2db.auth.so).to.be.undefined
@@ -47,8 +48,8 @@ unlink = ->
           expect(u0db.auth.so).to.exist
           expect(u0db.auth.so.user_id).to.not.equal(so_apteam._json.user_id)
           expect(u0db.auth.in).to.exist
-          OAUTH so_apteam, {status:401,contentType:/json/}, (e) ->
-            expect(e.message).inc("Unlink existing")
+          OAUTH so_apteam, {status:401,accept:"text/html"}, (html) ->
+            expect(html).inc("Unlink existing")
             PUT "/users/unlinkoauth/stackoverflow", {}, (u1) ->
               expect(u1.auth.gh).to.exist
               expect(u1.auth.so).to.be.undefined

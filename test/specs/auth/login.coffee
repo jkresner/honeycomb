@@ -1,24 +1,25 @@
 
 individuals = ->
 
-  SKIP 'Password login with exisitng password set by user', ->
+
+  IT 'Password login with existing password set by user', ->
     login = email: "jkresner@yahoo.com.au", password: "asdfasdfasdfasdgfgsdfas"
-    DB.ensureDoc 'User', FIXTURE.users.jky, (e, r) ->
-      SUBMIT "/auth/password/login", {email:login.email,password:'bogus'}, { content:'json', status: 401 }, (e1) ->
-        expect(e1.message).inc 'Incorrect'
-        SUBMIT "/auth/password/login", login, { contentType:/text/, status: 302 }, (r) ->
+    DB.ensureDoc 'User', FIXTURE.users.jky, (eDB, rDB) ->
+      expect(rDB.emails[0].value).to.equal(login.email)
+      SUBMIT "/auth/password/login", {email:login.email,password:'bogus'}, { status: 401 }, (e) ->
+        expect(e.message).inc 'Incorrect'
+        SUBMIT "/auth/password/login", login, { accept: "text/plain", status: 302 }, (text) ->
           DONE()
 
 
   IT 'Github login with existing linked.gh match & no extra existing photos or emails', ->
     DB.ensureDoc 'User', FIXTURE.users.tst5, (e, r) ->
-      LOGIN {key:'tst5',oaEmails:'gh_emails_tst5'}, (session) ->
-        # expectExactFields(session,['_id','name','roles'])
-        # expect(session.roles.length).to.equal(0)
-        EXPECT.equalIdAttrs(session, FIXTURE.users.tst5)
+      LOGIN {key:'tst5', oaEmails:'gh_emails_tst5'}, (session) ->
+        expect(session).attrs('_id name')
+        expect(session).eqId(FIXTURE.users.tst5)
         expect(session.name).to.equal("Expert Five")
         DB.docById 'User', session._id, (r) ->
-          EXPECT.equalIdAttrs(session, r)
+          expect(session).eqId(r)
           expect(r.emails.length).to.equal(1)
           expect(r.emails[0]._id).to.exist
           expect(r.photos.length).to.equal(2)
@@ -28,25 +29,23 @@ individuals = ->
           expect(r.photos[1].primary).to.be.true
           expect(r.name).to.equal("Expert Five")
           expect(r.auth.gh.id).to.equal(11262470)
-          # expect(r.roles.length).to.equal(0)
           expect(r.log.notes).to.be.undefined
           expect(r.log.history.length).to.equal(1)
           expect(r.log.last.action).to.equal('login')
           expect(r.log.last.by.name).to.equal("Expert Five")
-          EXPECT.equalIdAttrs(r.log.last.by,session)
-          EXPECT.equalIdAttrs(r.log.last, r.log.history[0])
+          expect(r.log.last.by).eqId(session)
+          expect(r.log.last).eqId(r.log.history[0])
           DONE()
 
 
   IT 'Github login with existing auth.gh match & existing extra photos + emails', ->
     DB.ensureDoc 'User', FIXTURE.users.tst1, ->
       LOGIN 'tst1', (session) ->
-        # expectExactFields(session,['_id','name','roles'])
-        # expect(session.roles.length).to.equal(0)
-        expect(session._id).eqId(FIXTURE.users.tst1._id)
+        expect(session).attrs('_id name')
+        expect(session).eqId(FIXTURE.users.tst1)
         expect(session.name).to.equal("Expert One")
         DB.docById 'User', session._id, (r) ->
-          EXPECT.equalIdAttrs(session, r)
+          expect(session).eqId(r)
           expect(r.emails.length).to.equal(2)
           expect(r.emails[0].value).to.equal('airpairtest1@gmail.com')
           expect(r.emails[0].origin).to.equal('manual:input')
@@ -62,13 +61,13 @@ individuals = ->
           expect(r.photos[1].primary).to.be.false
           expect(r.name).to.equal("Expert One")
           expect(r.auth.gh.id).to.equal(11261012)
-          # expect(r.roles.length).to.equal(0)
+          expect(r.roles).to.be.undefined
           expect(r.log.notes).to.be.undefined
           expect(r.log.history.length).to.equal(1)
           expect(r.log.last.action).to.equal('login')
           expect(r.log.last.by.name).to.equal("Expert One")
-          EXPECT.equalIdAttrs(r.log.last.by,session)
-          EXPECT.equalIdAttrs(r.log.last, r.log.history[0])
+          expect(r.log.last.by).eqId(session)
+          expect(r.log.last).eqId(r.log.history[0])
           DONE()
 
 
@@ -81,12 +80,11 @@ individuals = ->
       expect(jky.auth.gh).to.be.undefined
       DB.ensureDoc 'User', jky, ->
         LOGIN 'jky', (session) ->
-          # expectExactFields(session,['_id','name','roles'])
-          # expect(session.roles.length).to.equal(0)
-          EXPECT.equalIdAttrs(session, FIXTURE.users.jky)
+          expect(session).attrs('_id name')
+          expect(session).eqId(FIXTURE.users.jky)
           expect(session.name).to.equal("Jonathon Yahoo")
           DB.docById 'User', session._id, (r) ->
-            EXPECT.equalIdAttrs(session, r)
+            expect(r).eqId(session)
             expect(r.emails.length).to.equal(1)
             expect(r.emails[0].value).to.equal('jkresner@yahoo.com.au')
             expect(r.emails[0].origin).to.equal('manual:input')
@@ -98,20 +96,20 @@ individuals = ->
             expect(r.photos[1].primary).to.be.false
             expect(r.name).to.equal("Jonathon Yahoo")
             expect(r.auth.gh.id).to.equal(11258947)
-            # expect(r.roles.length).to.equal(0)
             expect(r.log.notes).to.be.undefined
             expect(r.log.history.length).to.equal(2)
             expect(r.log.history[0].action).to.equal('signup')
+            expect(r.log.history[1].action).to.equal('login')
             expect(r.log.last.action).to.equal('login')
             expect(r.log.last.by.name).to.equal("Jonathon Yahoo")
-            EXPECT.equalIdAttrs(r.log.last.by,session)
-            EXPECT.equalIdAttrs(r.log.last, r.log.history[1])
+            expect(r.log.last.by).eqId(session)
+            expect(r.log.last).eqId(r.log.history[1])
             DONE()
 
 
 
-teams = ->
-  it 'Can link individual moving to team usage'
+# orgs = ->
+  # it 'Can link individual moving to team usage'
       # Step -1 (in a galaxy a long very very time ago)
 #     expect('login with github')
 #     expect('two emails jkresner@gmail.com and jk@microsoft.com')
@@ -153,4 +151,4 @@ teams = ->
 module.exports = ->
 
   DESCRIBE("Individuals", individuals)
-  # DESCRIBE("Teams", teams)
+  # DESCRIBE("Ors", orgs)

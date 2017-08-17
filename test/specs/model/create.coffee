@@ -52,7 +52,7 @@ schema = ->
         expect(r.oauth.gp.given_name).to.be.undefined
         expect(r.oauth.gp.family_name).to.be.undefined
         DB.docById 'Auth', r._id, (r2) ->
-          # EXPECT.attr(r2.password,'hash', String)
+          expect(r2.password).attrs('hash')
           expect(r2.password.created).to.be.undefined
           expect(r2.oauth.gp).attr('id', String)
           expect(r2.oauth.gp).attr('name', String)
@@ -68,11 +68,11 @@ schema = ->
     {missingSubDoc} = FIXTURE.auths
     DB.removeDocs 'Auth', { '_id': missingSubDoc._id }, ->
       Auth.create missingSubDoc, (e, r) ->
-        EXPECT.equalIds(r._id, missingSubDoc._id)
+        expect(r).eqId(missingSubDoc)
         expect(r.password).attr('hash', String)
         expect(r.oauth).to.be.undefined
         DB.docById 'Auth', r._id, (r2) ->
-          EXPECT.equalIds(r2._id, missingSubDoc._id)
+          expect(r2).eqId(missingSubDoc)
           expect(r2.password).attr('hash', String)
           expect(r2.oauth).to.be.undefined
           DONE()

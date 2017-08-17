@@ -1,5 +1,5 @@
-var Configure = require('../../../lib/app/configure')
-var {join}    = require('path')
+var Configure = require(join(process.cwd(),'/lib/app/configure'))
+
 
 module.exports = () => {
 
@@ -23,7 +23,7 @@ module.exports = () => {
     process.env.AUTH_OAUTH_GITHUB_USERAGENT = 'ghtest2-ua'
     process.env.COMM_SENDERS_ERR_EMAIL = 'err@test.com'
     process.env.LOG_APPKEY = 'test2'
-    process.env.LOG_ERRORS = '{{undefine}}'    
+    process.env.LOG_ERRORS = '{{undefine}}'
     process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest2/db'
     process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test2'
     var cfg2 = Configure({}, 'dev')
@@ -95,7 +95,7 @@ module.exports = () => {
     var appCfg7 = { log: { it: { app: false } , error: undefined }, model: undefined, auth: undefined, comm: undefined, middleware: undefined }
     process.env.LOG_APPKEY = 'test7'
     process.env.LOG_ERRORS_MAIL_TO = "email@mail.com"
-    process.env.LOG_ERRORS_MAIL_SENDER = "from@mail.com"    
+    process.env.LOG_ERRORS_MAIL_SENDER = "from@mail.com"
     var cfg7 = Configure(appCfg7, 'dev')
     expect(cfg7.log.it.app).to.equal(false)
     DONE()
@@ -157,7 +157,7 @@ module.exports = () => {
       wrappers: { timezone: { key: '{{required}}' }},
       auth: undefined, comm: undefined, model: undefined, middleware: undefined
     }
-    process.env.LOG_ERRORS = '{{undefine}}'    
+    process.env.LOG_ERRORS = '{{undefine}}'
     process.env.LOG_IT_TEST11_THEME_RUN = 'gray'
     process.env.LOG_IT_TEST11_THEME_ERROR = 'white'
     process.env.WRAPPERS_TIMEZONE_KEY = 'whitetime'
@@ -175,7 +175,7 @@ module.exports = () => {
   IT('Dev mode gets default host without http.host env input', function() {
     var appCfg12 = { auth: undefined, comm: undefined, model: undefined, middleware: undefined }
     process.env.LOG_APPKEY = "test12"
-    process.env.LOG_ERRORS = '{{undefine}}'    
+    process.env.LOG_ERRORS = '{{undefine}}'
     var cfg12 = Configure(appCfg12, 'dev')
     expect(cfg12.http.host).to.equal('http://localhost:3333')
     DONE()
@@ -192,10 +192,10 @@ module.exports = () => {
   IT('Applies distribution bundle values when environment dist.manifest set', function() {
     process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions'
     process.env.LOG_APPKEY = "test14"
-    process.env.LOG_ERRORS = '{{undefine}}'    
+    process.env.LOG_ERRORS = '{{undefine}}'
 
     // var cfg14a = Configure(join(__dirname, '../data/fixtures/app14'), 'dev')
-    
+
     // expect(cfg14a.http.static.bundles["js/ang1.js"]).to.equal("js/ang1.js")
     // expect(cfg14a.http.static.bundles["css/app.css"]).to.equal("css/app.css")
 

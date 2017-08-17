@@ -1,7 +1,7 @@
 module.exports = (DAL) => ({
-  
-  updateBLAH(by, action, updates, cb) {
-    
+
+  dryTESTfn(by, action, updates, cb) {
+
   }
 
 })

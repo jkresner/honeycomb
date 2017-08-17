@@ -12,7 +12,6 @@ module.exports = ->
       expect(r.to[1]).to.equal('abc <sbc@test.com>')
       expect(r.subject).to.equal(err.message)
       expect(r.text).inc('size **bold**')
-      # expect(r.html).inc('size <strong>bold</strong>')
       expect(r.html).to.be.undefined
       expect(r.messageId).to.exist
       DONE()

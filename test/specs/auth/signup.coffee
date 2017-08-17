@@ -13,14 +13,12 @@ individuals = ->
 
   IT "Creates new user account with unrecognized github id", ->
     LOGIN {key:'jkg'}, (session) ->
-      # expectExactFields(session,['_id','name'])
-      # expect(session.scope.length).to.equal(0)
+      expect(session).attrs(['_id','name'])
       expect(session._id.toString()).to.not.equal("549342348f8c80299bcc56c2")
       expect(session.name).to.equal("Jonathon Kresner")
       DB.docById 'User', session._id, (r) ->
-        EXPECT.equalIdAttrs(session, r)
+        expect(session).eqId(r)
         # expect(r.emails.length>1).to.be.true
-        # expect(r.scope.length).to.equal(0)
         expect(r.emails[0]._id).to.exist
         expect(r.photos.length).to.equal(1)
         expect(r.photos[0].type).to.equal('github')
@@ -28,13 +26,13 @@ individuals = ->
         expect(r.auth.gh.id).to.equal(979542)
         expect(r.log.history.length).to.equal(1)
         expect(r.log.last.action).to.equal('signup')
-        EXPECT.equalIdAttrs(r.log.last, r.log.history[0])
+        expect(r.log.last).eqId(r.log.history[0])
         DONE()
 
   
   IT "Facebook signup & login creates one user", ->
     {fb_jk} = FIXTURE.oauth
-    opts = status: 200, contentType: /json/
+    opts = status: 200, contentType: /json/, accept: "application/json"
     DB.removeDocs 'User', { 'emails.value': fb_jk.email }, -> 
       OAUTH {_json:fb_jk,provider:'facebook'}, opts, (s1) ->
         jkId = s1._id
@@ -46,7 +44,7 @@ individuals = ->
           expect(u1.auth.fb.id).to.equal(fb_jk.id)
           LOGOUT ->
             OAUTH {_json:fb_jk,provider:'facebook'}, opts, (s2) ->
-              expect(s1._id).eqId(s2._id)
+              expect(s1).eqId(s2)
               DONE()
   
 
@@ -55,7 +53,7 @@ individuals = ->
 
 
 
-teams = ->
+org = ->
   it "creates new user with uppercase letters in email all as lowercase"
   it "cannot create a new user with email in another account"
   it "Can signup new user with corporate domain and credit card"
@@ -66,5 +64,5 @@ teams = ->
 module.exports = ->
 
   DESCRIBE("Individual", individuals)
-  # DESCRIBE("Team", teams)
+  # DESCRIBE("Org", org)
 
