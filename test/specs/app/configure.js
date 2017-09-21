@@ -1,10 +1,12 @@
-var Configure = require(join(process.cwd(),'/lib/app/configure'))
-
+const Configure = require(join(process.cwd(),'/lib/app/configure'))
+const quiet = process.env.LOG_QUIET
 
 module.exports = () => {
 
   beforeEach(function(){
-    for (var envVar in process.env) delete process.env[envVar]
+    for (let envVar in process.env)
+      delete process.env[envVar]
+    if (quiet) process.env.LOG_QUIET = quiet
     process.env.HTTP_STATIC_FAVICON_ROOT = 'ico'
   })
 

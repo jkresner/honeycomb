@@ -1,6 +1,6 @@
-module.exports = (app, mw) => 
+module.exports = (app, mw) =>
 
-  app
+  honey.Router('pages')
 
     .get('/',
       mw.$.session,

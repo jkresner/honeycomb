@@ -7,7 +7,7 @@ basic = ->
       "5149dccb5fc6390200000013",
       "5149dccb5fc6390200000022"
     ]
-    Tag.getManyById q, (e, r) ->
+    DAL.Tag.getManyById q, (e, r) ->
       expect(r.length).to.equal(2)
       expect(r[0]._id).bsonId()
       expect(r[0].name).to.equal("AngularJS")
@@ -19,7 +19,7 @@ basic = ->
       ObjectId("5149dccb5fc6390200000013"),
       ObjectId("5149dccb5fc6390200000022")
     ]
-    Tag.getManyById q, (e, r) ->
+    DAL.Tag.getManyById q, (e, r) ->
       expect(r.length).to.equal(2)
       expect(r[0].name).to.equal("AngularJS")
       expect(r[1]._id).bsonId()

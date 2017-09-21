@@ -1,8 +1,7 @@
+module.exports = ->
 
-individuals = ->
 
-
-  IT 'Update primary email', ->
+  IT.skip 'Update primary email', ->
     DB.removeDocs 'User', { 'auth.gh.id': 979542 }, ->
       LOGIN {key:'jkg',oaEmails:'gh_emails_jk'}, (session) ->
         # expect(session.emails).to.be.undefined
@@ -24,11 +23,4 @@ individuals = ->
             DONE()
 
 
-#   it 'Disable email'
-
-#   it 'Fails to disable primary email'
-
-
-module.exports = ->
-
-  DESCRIBE("Individuals", individuals)
+  it 'Update avatar (primary photo)'

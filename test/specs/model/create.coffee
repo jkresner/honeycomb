@@ -2,10 +2,10 @@
 basic = ->
 
 
-  IT "creates without __v", ->
+  IT "new without __v", ->
     suffix = @testSeed
     t = name: "Test__v#{suffix}", slug: "test-v-#{suffix}"
-    Tag.create t, (e, r) ->
+    DAL.Tag.create t, (e, r) ->
       DB.docById 'Tag', r._id, (tag) ->
         expect(tag._id).bsonId()
         expect(tag.name).to.equal("Test__v#{suffix}")
@@ -14,10 +14,11 @@ basic = ->
         DONE()
 
 
-  IT "creates", ->
+  IT "new with exact keys + values", ->
     suffix = @testSeed
     t = name: "Test#{suffix}", slug: "test-#{suffix}"
-    Tag.create t, (e, r) ->
+    DAL.Tag.create t, (e, r) ->
+      expect(r).attrs('_id name slug')
       expect(r._id).bsonId()
       expect(r.name).to.equal("Test#{suffix}")
       expect(r.slug).to.equal("test-#{suffix}")
@@ -29,7 +30,7 @@ schema = ->
   IT "auto creates _id for nested schemas", ->
     suffix = @testSeed
     t = name: "Org-#{suffix}", teams: [{name:"Team1-#{suffix}"}]
-    Org.create t, (e, r) ->
+    DAL.Org.create t, (e, r) ->
       expect(r._id).bsonId()
       expect(r.name).to.equal("Org-#{suffix}")
       expect(r.teams.length).to.equal(1)
@@ -41,7 +42,7 @@ schema = ->
   IT "restricts fields to schema", ->
     {bloat} = FIXTURE.auths
     DB.removeDocs 'Auth', { 'oauth.gp.id': bloat.oauth.gp.id }, ->
-      Auth.create bloat, (e, r) ->
+      DAL.Auth.create bloat, (e, r) ->
         expect(r.password).attr('hash', String)
         expect(r.password, 'created')
         expect(r.oauth.gp).attr('id', String)
@@ -67,7 +68,7 @@ schema = ->
   IT "Create with undefined nested doc if not provided", ->
     {missingSubDoc} = FIXTURE.auths
     DB.removeDocs 'Auth', { '_id': missingSubDoc._id }, ->
-      Auth.create missingSubDoc, (e, r) ->
+      DAL.Auth.create missingSubDoc, (e, r) ->
         expect(r).eqId(missingSubDoc)
         expect(r.password).attr('hash', String)
         expect(r.oauth).to.be.undefined

@@ -23,38 +23,36 @@ module.exports = () =>
         ses: {
           accessKeyId: "--",
           secretAccessKey: "--" },
-        smtp: { 
-          "service": "--", 
-          "auth": { "user": "--", "pass": "--" } 
+        smtp: {
+          "service": "--",
+          "auth": { "user": "--", "pass": "--" }
         }
       }
     }
 
-    honey.log = { issue: data => `${data.e.message} **bold**` }
-    honey.templates = require('../../lib/app/templates')(null, conf)
-    
-    global.COMM = require('../../lib/comm/index')(conf)
+    STUB.globals({
+      honey: {
+        log: { issue: data => `${data.e.message} **bold**` },
+        logic: { DRY: { id: { new: x => global.ObjectId() } } },
+        templates: require('../../lib/app/templates')(null, conf),
+      },
+      COMM: require('../../lib/comm/index')(conf),
+      Wrappers: assign({ pushr: {
+        api: { send(msg, cb) { cb(null, msg) } },
+        sendGroup(to, msg, opts, cb) {},
+        sendUser(to, msg, opts, cb) {
+          this.api.send(assign(msg,{token:to.push}), cb)
+        }}}, global.Wrappers)
+    })
 
-    global.Wrappers.pushr = {
-      api: { send(msg, cb) { cb(null, msg) } },
-      sendGroup(to, msg, opts, cb) {},
-      sendUser(to, msg, opts, cb) {
-        this.api.send(assign(msg,{token:to.push}), cb)
-      }
-    }
-    
     COMM.add('pushr')
   })
 
   after(function() {
-    delete global.cache
-    delete global.config
-    delete global.COMM
-    delete global.honey.log
-    delete global.honey.templates   
+    STUB.restore.globals()
   })
 
-    
+
   DESCRIBE("error", require('./comm/error'))
   DESCRIBE("sendUser", require('./comm/toUser'))
   DESCRIBE("sendUsers", require('./comm/toUsers'))

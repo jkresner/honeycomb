@@ -1,7 +1,7 @@
 link = ->
 
 
-  IT 'Link stackoverflow profile', ->
+  IT 'so', ->
     {so_apteam} = FIXTURE.oauth
     tst1 = FIXTURE.clone('users.tst1')
     DB.ensureDoc 'User', tst1, ->
@@ -18,7 +18,7 @@ link = ->
               DONE()
 
 
-  IT 'Fails overwrite github profile', ->
+  IT 'gh Fail overwrite', ->
     {gh_two} = FIXTURE.oauth
     tst1 = FIXTURE.clone('users.tst1')
     DB.ensureDoc 'User', tst1, ->
@@ -26,7 +26,7 @@ link = ->
         DB.docById 'User', tst1._id, (u1db) ->
           expect(u1db.auth.gh).to.exist
           expect(u1db.auth.so).to.be.undefined
-          OAUTH gh_two, {status:401,accept:"text/html"}, (html) ->
+          OAUTH gh_two, {status:403,accept:"text/html"}, (html) ->
             expect(html).inc("Session overwrite disallowed")
             DB.docById 'User', tst1._id, (u2db) ->
               expect(u2db.auth.gh).to.exist
@@ -37,7 +37,7 @@ link = ->
 unlink = ->
 
 
-  IT 'Unlink stackoverflow + linkedIN profiles & re-auth stackoverflow', ->
+  IT 'so + in then re-link so', ->
     {so_apteam} = FIXTURE.oauth
     {tst11} = FIXTURE.users
     DB.ensureDoc 'User', tst11, ->
@@ -48,7 +48,7 @@ unlink = ->
           expect(u0db.auth.so).to.exist
           expect(u0db.auth.so.user_id).to.not.equal(so_apteam._json.user_id)
           expect(u0db.auth.in).to.exist
-          OAUTH so_apteam, {status:401,accept:"text/html"}, (html) ->
+          OAUTH so_apteam, {status:403,accept:"text/html"}, (html) ->
             expect(html).inc("Unlink existing")
             PUT "/users/unlinkoauth/stackoverflow", {}, (u1) ->
               expect(u1.auth.gh).to.exist
@@ -75,12 +75,12 @@ unlink = ->
                         DONE()
 
 
-  IT 'Fails unlink when provider unlink disable by config', ->
+  IT 'gh Fails with config:unlink=false', ->
     expect(global.config.auth.oauth.github.unlink is false).to.be.true
     DB.ensureDoc 'User', FIXTURE.users.tst1, ->
       LOGIN 'tst1', (s) ->
-        PUT "/users/unlinkoauth/github", {}, { status: 403 }, (err) ->
-          expect(err.message).inc('github unlink not support by this app')
+        PUT "/users/unlinkoauth/github", {}, { status: 403 }, (e) ->
+          expect(e.message).inc('github unlink not support by this app')
           DONE()
 
 

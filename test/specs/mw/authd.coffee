@@ -1,5 +1,3 @@
-
-
 anon = ->
 
 
@@ -18,17 +16,17 @@ authd = ->
 
 
   IT '[302] / => /calendar', ->
-    LOGIN {key:'jkg',oaEmails:''}, (session) ->
-      expect(session._id).to.exist
-      expect(session.name).to.equal('Jonathon Kresner')
+    LOGIN 'mwauthd', (session) ->
+      expect(session._id).bsonIdStr()
+      expect(session.name).to.equal('Jaye Kaye')
       REDIRECT '/', {}, (text) ->
         expect(text).inc 'Redirecting to /calendar'
         DONE()
 
 
   IT '[200] /calendar', ->
-    LOGIN 'jkg', (session) ->
-      expect(session._id).to.exist
+    LOGIN 'mwauthd', (session) ->
+      expect(session._id).bsonIdStr()
       PAGE '/calendar', { status: 200 }, (text) ->
         expect(text).inc 'Logout'
         DONE()
@@ -36,5 +34,5 @@ authd = ->
 
 module.exports = ->
 
-  DESCRIBE("ANONYMOUS", anon)
+  DESCRIBE("ANNONYMOUS", anon)
   DESCRIBE("AUTHENTICATED", authd)

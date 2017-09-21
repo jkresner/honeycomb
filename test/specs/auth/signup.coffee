@@ -1,68 +1,49 @@
-individuals = ->
-
-  beforeEach (done) ->
-    DB.removeDocs 'User', { 'auth.gh.id': 979542 }, -> done()
+module.exports = ->
 
 
-  IT "Fails without verified github email", ->
-    LOGIN {key:'jkg',oaEmails:'gh_emails_unverified'}, {status:401}, (e) ->
-      expect(e.message).inc("No verified email")
+  IT "OAUTH.gh fails without verified github.email", ->
+    LOGIN 'auth_unverified', {status:401,accept:'json'}, (e) =>
       expect(e.message).starts("No verified email")
       DONE()
 
 
-  IT "Creates new user account with unrecognized github id", ->
-    LOGIN {key:'jkg'}, (session) ->
+  IT "OAUTH.gh creates user with new github.id", ->
+    uniqs = 'auth.gh.id auth.gh.login auth.gh.emails.email'
+    key = FIXTURE.uniquify('users', 'auth_ghnew', uniqs)
+    LOGIN key, (session) =>
       expect(session).attrs(['_id','name'])
       expect(session._id.toString()).to.not.equal("549342348f8c80299bcc56c2")
-      expect(session.name).to.equal("Jonathon Kresner")
-      DB.docById 'User', session._id, (r) ->
+      expect(session.name).inc("Jono Kaye")
+      DB.docById 'User', session._id, (r) =>
         expect(session).eqId(r)
-        # expect(r.emails.length>1).to.be.true
-        expect(r.emails[0]._id).to.exist
+        expect(r.emails.length).to.equal(2)
+        expect(r.emails[0]._id).bsonId()
+        expect(r.emails[1]._id).bsonId()
         expect(r.photos.length).to.equal(1)
-        expect(r.photos[0].type).to.equal('github')
-        expect(r.name).to.equal("Jonathon Kresner")
-        expect(r.auth.gh.id).to.equal(979542)
+        expect(r.photos[0]._id).bsonId()
+        expect(r.photos[0].type).inc('github')
+        expect(r.name).to.equal("Jono Kaye")
+        expect(r.auth.gh.id).to.equal(FIXTURE.users[key].auth.gh.id)
         expect(r.log.history.length).to.equal(1)
         expect(r.log.last.action).to.equal('signup')
         expect(r.log.last).eqId(r.log.history[0])
         DONE()
 
-  
-  IT "Facebook signup & login creates one user", ->
+
+  IT "OAUTH.fb creates one user for signup + login", ->
     {fb_jk} = FIXTURE.oauth
     opts = status: 200, contentType: /json/, accept: "application/json"
-    DB.removeDocs 'User', { 'emails.value': fb_jk.email }, -> 
-      OAUTH {_json:fb_jk,provider:'facebook'}, opts, (s1) ->
+    DB.removeDocs 'User', { 'emails.value': fb_jk.email }, (r) =>
+      OAUTH {_json:fb_jk,provider:'facebook'}, opts, (s1) =>
         jkId = s1._id
-        expect(s1.name).to.equal(fb_jk.name)        
-        DB.docById 'User', jkId, (u1) -> 
+        expect(s1.name).to.equal(fb_jk.name)
+        DB.docById 'User', jkId, (u1) =>
           expect(u1._id).eqId(jkId)
           expect(u1.auth).to.exist
           expect(u1.auth.fb).to.exist
           expect(u1.auth.fb.id).to.equal(fb_jk.id)
-          LOGOUT ->
-            OAUTH {_json:fb_jk,provider:'facebook'}, opts, (s2) ->
+          LOGOUT () =>
+            OAUTH {_json:fb_jk,provider:'facebook'}, opts, (s2) =>
               expect(s1).eqId(s2)
               DONE()
-  
-
-
-  it "Saves correct cohort info for new users"
-
-
-
-org = ->
-  it "creates new user with uppercase letters in email all as lowercase"
-  it "cannot create a new user with email in another account"
-  it "Can signup new user with corporate domain and credit card"
-
-
-
-
-module.exports = ->
-
-  DESCRIBE("Individual", individuals)
-  # DESCRIBE("Org", org)
 

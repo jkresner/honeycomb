@@ -14,7 +14,7 @@ basic = ->
       expect(r.by.name).to.equal("Edwin Herma")
       expect(r.log).to.be.undefined
       updates.push({_id:r._id, log:{last:'payout'}})
-      Order.updateSetBulk updates, (e1, bulk) ->
+      DAL.Order.updateSetBulk updates, (e1, bulk) ->
         expect(bulk.modifiedCount).to.equal(1)
         DB.docById 'Order', one._id, (oneDB) ->
           expect(oneDB._id).to.exist
@@ -25,13 +25,13 @@ basic = ->
           expect(oneDB.by.name).to.equal("Edwin Herma")
           expect(oneDB.log.last).to.exist
           expect(oneDB.requestId).eqId(one.requestId)
-          Order.getById one._id, (e2, one2) ->
+          DAL.Order.getById one._id, (e2, one2) ->
             {lines} = one2
             expect(lines[2].unitPrice).to.equal(146) # not part of schema
             expect(lines[2].info.name).to.equal("60 min (Jon Hotter)")
             expect(lines[2].info.paidout).to.equal(false)
             lines[2].info.paidout = payoutId
-            Order.updateSetBulk [{_id:one2._id,lines}], (e2, bulk2) ->
+            DAL.Order.updateSetBulk [{_id:one2._id,lines}], (e2, bulk2) ->
               expect(bulk2.modifiedCount).to.equal(1)
               DB.docById 'Order', one._id, (oneDB2) ->
                 expect(oneDB2._id).to.exist

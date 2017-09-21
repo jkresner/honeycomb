@@ -3,7 +3,7 @@ var Util          = require('../../../lib/util/date')
 var MomentUtil    = Util.Moment
 
 
-module.exports = () => DESCRIBE("Util", function() {
+module.exports = () => {
 
 
   IT('inRange', function() {
@@ -19,4 +19,4 @@ module.exports = () => DESCRIBE("Util", function() {
   })
 
 
-})
+}

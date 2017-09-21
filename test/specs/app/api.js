@@ -1,5 +1,4 @@
 const noop  = ()=>{}
-let suspend = { APP: null, LOG: null, honey: null, _: null }
 let express = require('express')
 let port    = 1201
 let Router  = require(join(process.cwd(),'/lib/app/router'))
@@ -7,42 +6,40 @@ let Api     = require(join(process.cwd(),'/lib/app/api'))
 let $mw     = { trace:noop,name:noop,done:noop }
 let $req    = { STOP: true }
 let DAL     = { User: { getByQuery(q, opts, cb) { cb(null, { name: 'stub' }) } } }
-let deps    = { DAL, $mw, $req}
+let deps    = { DAL, $mw, $req }
 let MW      = {
   data: require(join(process.cwd(),'/lib/middleware/data'))(deps),
   res: require(join(process.cwd(),'/lib/middleware/res'))(deps)
 }
 let mw      = {
-  data: { api: MW.data.api, param: MW.data.param },
+  data: { api: MW.data.api, recast: MW.data.recast },
   $: {
     apiJson: MW.res.api({formatter:(()=>{})}),
-    fakeUser: (req, res, next) => next(null, assign(req,{user:{name:'fake'}}))
-  }
-  // session: (req, res, next) => next()
-}
-let logic   = {
-  users: {
-    me:  { chain: function(cb) { cb(null, this.user) } },
-    findUser: { chain: (user, cb) => cb(null, user) },
-    getUser: { chain: (_id, cb) => cb(null, { _id, name: 'first last'}) },
-    listUser: { chain: (cb) => cb(null, [{ name: 'first'},{name:'second'}]) }
+    fakeUser: (req, res, next) => next(null, assign(req,{user:{name:'fake'}})),
+    wrap: (req, res, next) => next()
   }
 }
 
 module.exports = () => {
 
   before(function() {
-    Object.keys(suspend).forEach(key => suspend[key] = global[key])
-    global.LOG = () => {}
-    global._ = require('lodash')
+    STUB.globals({APP:null,LOG:noop,_:require('lodash'),honey:{
+      cfg: x => ({baseUrl:'/api'}),
+      logic: {
+        users: {
+          me:  { chain: function(cb) { cb(null, this.user) } },
+          findUser: { chain: (user, cb) => cb(null, user) },
+          getUser: { chain: (_id, cb) => cb(null, { _id, name: 'first last'}) },
+          listUser: { chain: (cb) => cb(null, [{ name: 'first'},{name:'second'}]) }
+        }
+      }
+    }})
   })
 
-  after(() =>
-    Object.keys(suspend).forEach(key => global[key] = suspend[key]))
+  after(function() { STUB.restore.globals() })
 
   beforeEach(function() {
-    global.honey = { cfg: x => ({baseUrl:'/api'}), logic }
-    global.APP = express()
+    global.APP = assign(express(),{honey:{middleware:mw}})
     honey.Router = Router(APP, express)
     APP.API = Api(APP, mw)
 

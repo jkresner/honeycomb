@@ -1,7 +1,7 @@
 var StringUtil = require('../../../lib/util/string')
 
 
-module.exports = () => DESCRIBE("Util", function() {
+module.exports = () => {
 
   IT('fistName', function() {
     expect(StringUtil.firstName("Jonathon Kresner")).to.equal("Jonathon")
@@ -47,5 +47,4 @@ module.exports = () => DESCRIBE("Util", function() {
   })
 
 
-
-})
+}

@@ -1,15 +1,15 @@
-var ObjectUtil = require('../../../lib/util/object')
+const Util = require('../../../lib/util/object')
 
 
-module.exports = () => DESCRIBE("Util", function() {
+module.exports = () => {
 
 
-  describe("Select", function() {
+  DESCRIBE("Select", function() {
 
     IT("Simple prop", function() {
 
       var sample = { name: "pair of developers", weight: 190 }
-      var result = ObjectUtil.select(sample,['name'])
+      var result = Util.select(sample,['name'])
       var keys = Object.keys(result)
       expect(keys.length).to.equal(1)
       expect(keys[0]).to.equal('name')
@@ -22,7 +22,7 @@ module.exports = () => DESCRIBE("Util", function() {
     IT("Array and object props", function() {
 
       var sample = { name: "three developers", weight: 280, tags: ['js','mocha','mean'], company: { name: 'three and a keyboard' } }
-      var result = ObjectUtil.select(sample,['weight','tags','company'])
+      var result = Util.select(sample,['weight','tags','company'])
       var keys = Object.keys(result)
       expect(keys.length).to.equal(3)
       expect(keys[0]).to.equal('weight')
@@ -48,7 +48,7 @@ module.exports = () => DESCRIBE("Util", function() {
         ]
       }
 
-      var result = ObjectUtil.select(sample,['company.url','lines.name'])
+      var result = Util.select(sample,['company.url','lines.name'])
       var keys = Object.keys(result)
       expect(keys.length).to.equal(2)
       expect(keys[0]).to.equal('company')
@@ -85,7 +85,7 @@ module.exports = () => DESCRIBE("Util", function() {
         }
       }}
 
-      var result = ObjectUtil.select(sample,['user.email','user.auth.gh.followers','user.auth.gh.login'])
+      var result = Util.select(sample,['user.email','user.auth.gh.followers','user.auth.gh.login'])
       var keys = Object.keys(result.user)
       expect(keys.length).to.equal(2)
       expect(keys[0]).to.equal('email')
@@ -109,12 +109,12 @@ module.exports = () => DESCRIBE("Util", function() {
   })
 
 
-  describe("Attr rename", function() {
+  DESCRIBE("AttrRename", function() {
 
     IT("Rename attr on single object", function() {
 
       var sample = { name: "three developers", weight: 280 }
-      var result = ObjectUtil.renameAttr(sample,{from:'name',to:'title'})
+      var result = Util.renameAttr(sample,{from:'name',to:'title'})
       var keys = Object.keys(result)
       expect(keys.length).to.equal(2)
       expect(keys[0]).to.equal('weight')
@@ -128,5 +128,4 @@ module.exports = () => DESCRIBE("Util", function() {
 
   })
 
-})
-
+}

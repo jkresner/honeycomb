@@ -1,16 +1,14 @@
 var FS        = require(join(process.cwd(),'/lib/app/fs'))
 var dir       = join(process.cwd(),'/test/data/fixtures/fs')
-var logIt     = null
 
 module.exports = () => {
 
   before(()=> {
-    logIt = global.LOG
-    global.LOG = () => {}
+    STUB.globals({LOG:(()=>{})})
   })
 
-  after(()=> {
-    global.LOG = logIt
+  after(function() {
+    STUB.restore.globals()
   })
 
 

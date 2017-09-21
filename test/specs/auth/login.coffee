@@ -7,14 +7,14 @@ individuals = ->
     DB.ensureDoc 'User', FIXTURE.users.jky, (eDB, rDB) ->
       expect(rDB.emails[0].value).to.equal(login.email)
       SUBMIT "/auth/password/login", {email:login.email,password:'bogus'}, { status: 401 }, (e) ->
-        expect(e.message).inc 'Incorrect'
+        expect(e.message).inc 'No matching credentials'
         SUBMIT "/auth/password/login", login, { accept: "text/plain", status: 302 }, (text) ->
           DONE()
 
 
   IT 'Github login with existing linked.gh match & no extra existing photos or emails', ->
     DB.ensureDoc 'User', FIXTURE.users.tst5, (e, r) ->
-      LOGIN {key:'tst5', oaEmails:'gh_emails_tst5'}, (session) ->
+      LOGIN 'tst5', (session) ->
         expect(session).attrs('_id name')
         expect(session).eqId(FIXTURE.users.tst5)
         expect(session.name).to.equal("Expert Five")

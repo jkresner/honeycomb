@@ -17,7 +17,7 @@ asSchema({
     in:                      {},
   },
   tagId:                     { type: Id, ref: "Tag" },
-  meta:                      {},
+  log:                       {},
   emails:                    {},
   photos:                    {}
 })

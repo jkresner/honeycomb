@@ -38,10 +38,9 @@ module.exports = {
            space: 976562499,
            collaborators: 0,
            private_repos: 0 },
-        token: 'aa1905fec86e484072fd210acfd27537c65faefa'
+        tokens: { "auth-ex1": { token: 'aa1905fec86e484072fd210acfd27537c65faefa' } }
       }
     },
-    "tagId" : ObjectId("5149dccb5fc6390200000013"),
     "log": { "history" : [] }
   },
 
@@ -60,7 +59,7 @@ module.exports = {
         company: null,
         blog: null,
         location: null,
-        email: null,
+        emails: [{ email:"airpairtest5@gmail.com",primary:true,verified:true}],
         hireable: null,
         bio: null,
         public_repos: 182,
@@ -79,7 +78,7 @@ module.exports = {
            space: 976562499,
            collaborators: 0,
            private_repos: 0 },
-        token: '261d9670b74fed23b2098a55d9bccf55a7526661'
+        tokens: { "auth-ex1": { token: '261d9670b74fed23b2098a55d9bccf55a7526661' } }
       }
     },
     "log": { "history" : [] }
@@ -116,7 +115,7 @@ module.exports = {
         disk_usage: 0,
         collaborators: 0,
         plan:{},
-        token: '1111'
+        tokens: { "auth-ex1": { token: '1111' } }
       },
       so: {
         "badge_counts":{"bronze":11,"silver":11,"gold":11},
@@ -179,7 +178,7 @@ module.exports = {
           "collaborators" : 0,
           "private_repos" : 0
         },
-        token: 'bbb90666686e484072fd210acfd27537c65faefa'
+        tokens: { "auth-ex1": { token: 'bbb90666686e484072fd210acfd27537c65faefa' } }
       }
     },
     "username" : "jkres",
@@ -219,7 +218,7 @@ module.exports = {
         disk_usage: 0,
         collaborators: 0,
         plan: { name: 'free', space: 976562499, collaborators: 0, private_repos: 0 },
-        token: '34f4c2e52eaf0134a669a771255668a02dacd122'
+        tokens: { "auth-ex1": { token: '34f4c2e52eaf0134a669a771255668a02dacd122' } }
       }
     },
     "username" : "jkresnerau",
@@ -234,6 +233,91 @@ module.exports = {
       }
     }
   },
+
+  mwauthd: {
+    "_id" : ObjectId("598962e3735a750004278ffe"),
+    "name" : "Jaye Kaye",
+    "auth" : {
+      "gh": {
+        login: 'jkcf',
+        id: 13332947,
+        avatar_url: 'https://avatars.githubusercontent.com/u/11258947?v=3',
+        gravatar_id: '',
+        name: "Jaye Kaye",
+        emails: [{email:"jk@cf.com",primary:false,verified:true}],
+        company: null,
+        blog: null,
+        location: null,
+        email: null,
+        hireable: null,
+        bio: null,
+        public_repos: 1,
+        public_gists: 0,
+        followers: 0,
+        following: 0,
+        created_at: '2012-03-01T17:30:48Z',
+        updated_at: '2012-10-05T16:05:32Z',
+        private_gists: 0,
+        total_private_repos: 0,
+        owned_private_repos: 0,
+        disk_usage: 0,
+        collaborators: 0,
+        plan: { name: 'free', space: 976562499, collaborators: 0, private_repos: 0 },
+        tokens: { "auth-ex1": { token: 'tokkkk' } }
+      }
+    },
+    "log" : { "history" : [] },
+    "photos" : [{ "_id" : ObjectId("598962e3735a750004279000"), "primary" : true, "type" : "facebook", "value" : "https://scontent.xx.fbcdn.net/v/t1.0-1/20604167_103941463641957_2113239479145543037_n.jpg?oh=dff390d48e8708f836eb74ed48d8f5d6&oe=5A2F7F71" }],
+    "emails" : [{ "origin" : "oauth:github", "verified" : true, "value" : "jk@cf.com", "primary" : true, "_id" : ObjectId("598962e3735a750004278ffd") }]
+  },
+
+  auth_unverified: {
+    "auth" : {
+      "gh": {
+        login: 'jokaye',
+        id: 11112127,
+        avatar_url: 'https://avatars.githubusercontent.com/u/11258947?v=3',
+        name: "Jono Kaye",
+        emails: [{email:"jok@test.com",primary:false,verified:false}],
+        public_repos: 1,
+        public_gists: 0,
+        followers: 0,
+        following: 0,
+        created_at: '2012-03-01T17:30:48Z',
+        updated_at: '2012-10-05T16:05:32Z',
+        private_gists: 0,
+        total_private_repos: 0,
+        owned_private_repos: 0,
+        tokens: { "auth-ex1": { token: 'tokkeekk' } }
+      }
+    }
+  },
+
+  auth_ghnew: {
+    "auth" : {
+      "gh": {
+        login: 'jokaye',
+        id: 11112127,
+        avatar_url: 'https://avatars.githubusercontent.com/u/11258947?v=3',
+        name: "Jono Kaye",
+        emails: [
+          { email:"jok@test.com",primary:true,verified:true },
+          { email:"jok@tst.co",primary:false,verified:true }
+        ],
+        public_repos: 1,
+        public_gists: 0,
+        followers: 0,
+        following: 0,
+        created_at: '2012-03-01T17:30:48Z',
+        updated_at: '2012-10-05T16:05:32Z',
+        private_gists: 0,
+        total_private_repos: 0,
+        owned_private_repos: 0,
+        tokens: { "auth-ex1": { token: 'tokkeekk' } }
+      }
+    }
+  }
+
 
 
 }

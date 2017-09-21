@@ -1,4 +1,3 @@
-let suspend = { APP: null, LOG: null, honey: null }
 let express = require('express')
 let Router  = require(join(process.cwd(),'/lib/app/router'))
 
@@ -15,26 +14,24 @@ let mw = { $1: mwN('1'), $2: mwN('2'), $3: mwN('3'), $4: mwN('4'),
 module.exports = () => {
 
   before(function() {
-    Object.keys(suspend).forEach(key => suspend[key] = global[key])
-    global.LOG = () => {}
+    STUB.globals({ LOG:()=>{}, honey:{ cfg: x => {} } })
   })
 
-  after(() =>
-    Object.keys(suspend).forEach(key => global[key] = suspend[key]))
-
   beforeEach(function() {
-    global.APP = express()
-      .use((req,res,next) => next(null, req.locals = {}))
+    STUB.globals({ APP: express()
+      .use((req,res,next) => next(null, req.locals = {})) })
 
+    APP.honey = { middleware: { $:{ wrap(req, res, next) { next() } }}}
+    APP.setViewOpts = () => {}
     APP.ready = cb =>
       APP.use((res, req, next) => next(null, console.log('not found')))
          .use((e, req, res, next) => { throw(e) })
          .listen(1101, cb).on('error', cb)
 
-    global.honey = { cfg: x => {} }
     honey.Router = Router(APP, express)
   })
 
+  after(function(){ STUB.restore.globals() })
 
   IT('Middleware silos in individual routers', function() {
 
