@@ -14,9 +14,9 @@ error = ->
 
   IT 'SyntaxError', ->
     str1 = F.error(SyntaxError("Unexpected token }"))
-    console.log(str1)
     expect(str1).to.exist
     lns1 = str1.split('\n')
+    console.log(str1, lns1.length, lns1)
     expect(lns1.length, lns1).to.equal(3)
     expect(lns1[0]).inc("SyntaxError: Unexpected token }".red)
     DONE()

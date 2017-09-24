@@ -1,11 +1,20 @@
 const Configure = require(join(process.cwd(),'/lib/app/configure'))
 const quiet = process.env.LOG_QUIET
+const env_temp = {}
 
 module.exports = () => {
 
-  beforeEach(function(){
-    for (let envVar in process.env)
-      delete process.env[envVar]
+  before(function() {
+    for (let prop in process.env) env_temp[prop] = process.env[prop]
+  })
+
+  after(function() {
+    for (let prop in process.env) delete process.env[prop]
+    for (let prop in env_temp) process.env[prop] = env_temp[prop]
+  })
+
+  beforeEach(function() {
+    for (let prop in process.env) delete process.env[prop]
     if (quiet) process.env.LOG_QUIET = quiet
     process.env.HTTP_STATIC_FAVICON_ROOT = 'ico'
   })
@@ -93,7 +102,7 @@ module.exports = () => {
   })
 
 
-  IT('Merges appConfig values on top of defaults', function() {
+  IT('merge app.json on top of defaults', function() {
     var appCfg7 = { log: { it: { app: false } , error: undefined }, model: undefined, auth: undefined, comm: undefined, middleware: undefined }
     process.env.LOG_APPKEY = 'test7'
     process.env.LOG_ERRORS_MAIL_TO = "email@mail.com"
@@ -104,13 +113,14 @@ module.exports = () => {
   })
 
 
-  IT('Merges appConfig values and sub-section on top of defaults', function() {
+  IT('merge app.json values and sub-section on top of defaults', function() {
     var appCfg6 = { auth: { oauth: { github: { signup: false } } }, comm: undefined, model: undefined, middleware: undefined, wrappers: { timezone: { key: 'testtime' } } }
     process.env.AUTH_APPKEY = 'test6'
     process.env.AUTH_OAUTH_GITHUB_CLIENTID = 'ghtest6'
     process.env.AUTH_OAUTH_GITHUB_CLIENTSECRET = 'ghtest6-secret'
     process.env.AUTH_OAUTH_GITHUB_USERAGENT = 'ghtest6-ua'
     process.env.LOG_APPKEY = 'test8'
+    process.env.LOG_VERBOSE = 'true'
     process.env.LOG_ERRORS_MAIL_TO = "email@mail.com"
     process.env.LOG_ERRORS_MAIL_SENDER = "from@mail.com"
     process.env.PORT = "4444"
@@ -126,6 +136,8 @@ module.exports = () => {
     expect(cfg4.auth.oauth.github.callbackURL).to.equal('http://localhost:4444/auth/github/callback')
     expect(cfg4.auth.oauth.github.scope.length).to.equal(1)
     expect(cfg4.auth.oauth.github.scope[0]).to.equal('user')
+    expect(cfg4.log.verbose).to.be.true
+    expect(cfg4.log.quiet).to.be.undefined
     expect(cfg4.wrappers.timezone.key).to.equal('testtime')
     DONE()
   })
@@ -134,9 +146,12 @@ module.exports = () => {
   IT('Add nested appConfig sub-section where no defaults exist', function() {
     var appCfg8 = { log: { appKey: 'test8', test8: { theme: { run: 'white', error: 'red' } } }, auth: undefined, comm: undefined, model: undefined, middleware: undefined  }
     process.env.LOG_ERRORS = "{{undefine}}"
-    var cfg8 = Configure(appCfg8, 'dev')
-    expect(cfg8.log.test8.theme.run).to.equal('white')
-    expect(cfg8.log.test8.theme.error).to.equal('red')
+    process.env.LOG_QUIET = "true"
+    let c = Configure(appCfg8, 'dev')
+    expect(c.log.test8.theme.run).to.equal('white')
+    expect(c.log.test8.theme.error).to.equal('red')
+    expect(c.log.verbose).to.be.undefined
+    expect(c.log.quiet).to.be.true
     DONE()
   })
 
@@ -184,9 +199,15 @@ module.exports = () => {
   })
 
 
-  IT('Test mode throws error without http.host env input', function() {
-    var fn = () => Configure({ auth: undefined, comm: undefined, model: undefined, middleware: undefined }, 'test')
-    expect(fn).to.throw(Error, /Configure failed. Override or environment var required for config.HTTP_HOST/)
+  IT('PORT not appended to http.host != localhost', function() {
+    process.env.HTTP_HOST = "https://prod.com"
+    process.env.LOG_APPKEY = "test13"
+    process.env.PORT = '1234'
+    process.env.LOG_ERRORS = '{{undefine}}'
+    let c = Configure({ auth: undefined, comm: undefined, model: undefined, middleware: undefined }, 'test')
+    expect(c.http.host).to.equal("https://prod.com")
+    expect(c.http.port).to.equal(1234)
+    expect(c.port).to.be.undefined
     DONE()
   })
 

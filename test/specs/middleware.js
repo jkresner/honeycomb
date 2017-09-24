@@ -8,4 +8,5 @@ module.exports = () =>
     // STUB.restore.globals()
   // })
 
-  DESCRIBE("authd", require('./mw/authd'))
+  DESCRIBE("authd",       require('./mw/authd'))
+  DESCRIBE("notfound",    require('./mw/notfound'))
