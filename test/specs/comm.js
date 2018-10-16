@@ -32,6 +32,7 @@ module.exports = () =>
 
     STUB.globals({
       honey: {
+        cfg: () => {},
         log: { issue: data => `${data.e.message} **bold**` },
         logic: { DRY: { id: { new: x => global.ObjectId() } } },
         templates: require('../../lib/app/templates')(null, conf),

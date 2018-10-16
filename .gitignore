@@ -28,7 +28,3 @@ build/Release
 node_modules
 web/components
 web/build/
-
-# Sym lnks
-.lib*
-cmd/build

@@ -27,7 +27,7 @@
         "logic":             "oauth",
         "clientID":          "{{required}}",
         "clientSecret":      "{{required}}"
-      },      
+      },
       "stackoverflow": {
         "short":             "so",
         "logic":             "oauth",
@@ -50,6 +50,10 @@
     }
   },
   "comm":                    "{{undefine}}",
+  "http": {
+    "host":                  "localhost",
+    "static":                { "favicon": "{{undefine}}" }
+  },
   "log":{
     "appKey":                "HON"
   },

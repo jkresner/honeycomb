@@ -9,7 +9,7 @@ module.exports = ->
 
   before ->
 
-    global.cache =
+    global.CAL =
       templates:
         'job:ses':
           from: () -> "Honey <noreply@honey.stub>"
@@ -21,7 +21,7 @@ module.exports = ->
           click: (data) -> "app:uri(job://#{data.job._id})"
 
   after ->
-    delete global.cache
+    delete global.CAL
 
 
   IT "Send many SES", ->

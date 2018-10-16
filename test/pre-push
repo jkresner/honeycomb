@@ -1,2 +1,2 @@
 #!/bin/sh
-coffee ./test/index.coffee;
+node_modules/.bin/coffee ./test/index.coffee;

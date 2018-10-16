@@ -35,27 +35,16 @@ module.exports = () => {
     process.env.COMM_SENDERS_ERR_EMAIL = 'err@test.com'
     process.env.LOG_APPKEY = 'test2'
     process.env.LOG_ERRORS = '{{undefine}}'
-    process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest2/db'
+    process.env.MODEL_DOMAIN_MONGOURL = 'mongodb://ghtest2/db'
     process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test2'
     var cfg2 = Configure({}, 'dev')
     expect(cfg2.env).to.equal('dev')
     expect(cfg2.auth.loginUrl).to.equal('/')
     expect(cfg2.auth.appKey).to.equal('test2')
-    expect(cfg2.auth.oauth.github.short).to.equal('gh')
-    expect(cfg2.auth.oauth.github.login).to.equal(true)
-    expect(cfg2.auth.oauth.github.signup).to.equal(true)
-    expect(cfg2.auth.oauth.github.emails).to.equal(true)
-    expect(cfg2.auth.oauth.github.logic).to.equal('oauth')
-    expect(cfg2.auth.oauth.github.clientID).to.equal('ghtest2')
-    expect(cfg2.auth.oauth.github.clientSecret).to.equal('ghtest2-secret')
-    expect(cfg2.auth.oauth.github.userAgent).to.equal('ghtest2-ua')
-    expect(cfg2.auth.oauth.github.callbackURL).to.equal('http://localhost:3333/auth/github/callback')
-    expect(cfg2.auth.oauth.github.scope.length).to.equal(1)
-    expect(cfg2.auth.oauth.github.scope[0]).to.equal('user')
     expect(cfg2.http.port).to.equal(3333)
     expect(cfg2.http.host).to.equal('http://localhost:3333')
     expect(cfg2.http.static.dirs[0]).to.inc('/public')
-    expect(cfg2.model.domain.mongoUrl).to.equal('mongo://ghtest2/db')
+    expect(cfg2.model.domain.mongoUrl).to.equal('mongodb://ghtest2/db')
     expect(cfg2.middleware.session.store.collection).to.equal('sessions-test2')
     DONE()
   })
@@ -63,13 +52,13 @@ module.exports = () => {
 
   IT('{{undefine}} auth and comm sections from appConfig', function() {
     var appCfg3 = { auth: undefined, http: {}, comm: "{{undefine}}", log: undefined }
-    process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest3/db'
+    process.env.MODEL_DOMAIN_MONGOURL = 'mongodb://ghtest3/db'
     process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test3'
 
     var cfg3 = Configure(appCfg3, 'dev')
     expect(cfg3.auth).to.be.undefined
     expect(cfg3.http.host).to.equal('http://localhost:3333')
-    expect(cfg3.model.domain.mongoUrl).to.equal('mongo://ghtest3/db')
+    expect(cfg3.model.domain.mongoUrl).to.equal('mongodb://ghtest3/db')
     expect(cfg3.middleware.session.store.collection).to.equal('sessions-test3')
     DONE()
   })
@@ -95,7 +84,7 @@ module.exports = () => {
     var appCfg5 = { auth: undefined, comm: undefined, log: {errors:undefined} }
     process.env.LOG_APPKEY = 'test5'
     process.env.LOG_IT_CFG_INIT = 'white'
-    process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest0/db'
+    process.env.MODEL_DOMAIN_MONGOURL = 'mongodb://ghtest0/db'
     process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test0'
     var cfg0 = Configure(appCfg5, 'dev')
     DONE()
@@ -115,6 +104,31 @@ module.exports = () => {
 
   IT('merge app.json values and sub-section on top of defaults', function() {
     var appCfg6 = { auth: { oauth: { github: { signup: false } } }, comm: undefined, model: undefined, middleware: undefined, wrappers: { timezone: { key: 'testtime' } } }
+    appCfg6.auth.oauth.github.short ='gh'
+    appCfg6.auth.oauth.github.login=true
+    // appCfg6.auth.oauth.github.signup=true
+    appCfg6.auth.oauth.github.emails=true
+    appCfg6.auth.oauth.github.logic='oauth'
+    appCfg6.auth.oauth.github.clientID='ghtest2'
+    appCfg6.auth.oauth.github.clientSecret='ghtest2-secret'
+    appCfg6.auth.oauth.github.userAgent='ghtest2-ua'
+    appCfg6.auth.oauth.github.callbackURL='http://localhost:4444/auth/github/callback'
+    // appCfg6.auth.oauth.github.scope.length=1
+    appCfg6.auth.oauth.github.scope=['user']
+
+
+    // expect(cfg2.auth.oauth.github.short).to.equal('gh')
+    // expect(cfg2.auth.oauth.github.login).to.equal(true)
+    // expect(cfg2.auth.oauth.github.signup).to.equal(true)
+    // expect(cfg2.auth.oauth.github.emails).to.equal(true)
+    // expect(cfg2.auth.oauth.github.logic).to.equal('oauth')
+    // expect(cfg2.auth.oauth.github.clientID).to.equal('ghtest2')
+    // expect(cfg2.auth.oauth.github.clientSecret).to.equal('ghtest2-secret')
+    // expect(cfg2.auth.oauth.github.userAgent).to.equal('ghtest2-ua')
+    // expect(cfg2.auth.oauth.github.callbackURL).to.equal('http://localhost:3333/auth/github/callback')
+    // expect(cfg2.auth.oauth.github.scope.length).to.equal(1)
+    // expect(cfg2.auth.oauth.github.scope[0]).to.equal('user')
+
     process.env.AUTH_APPKEY = 'test6'
     process.env.AUTH_OAUTH_GITHUB_CLIENTID = 'ghtest6'
     process.env.AUTH_OAUTH_GITHUB_CLIENTSECRET = 'ghtest6-secret'
@@ -137,7 +151,7 @@ module.exports = () => {
     expect(cfg4.auth.oauth.github.scope.length).to.equal(1)
     expect(cfg4.auth.oauth.github.scope[0]).to.equal('user')
     expect(cfg4.log.verbose).to.be.true
-    expect(cfg4.log.quiet).to.be.undefined
+    // expect(cfg4.log.quiet).to.be.undefined
     expect(cfg4.wrappers.timezone.key).to.equal('testtime')
     DONE()
   })

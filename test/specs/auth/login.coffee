@@ -1,5 +1,4 @@
-
-individuals = ->
+module.exports = ->
 
 
   IT 'Password login with existing password set by user', ->
@@ -105,50 +104,3 @@ individuals = ->
             expect(r.log.last.by).eqId(session)
             expect(r.log.last).eqId(r.log.history[1])
             DONE()
-
-
-
-# orgs = ->
-  # it 'Can link individual moving to team usage'
-      # Step -1 (in a galaxy a long very very time ago)
-#     expect('login with github')
-#     expect('two emails jkresner@gmail.com and jk@microsoft.com')
-#     expect(userId, mongo.Guid)
-
-#     # Step 0 (in a galaxy a long time ago)
-#     expect('login with github')
-#     expect('two emails eugene@gmail.com and euqene@microsoft.com')
-#     expect('verify:identity => microsoft verified (identity)')
-#     # expect('verify:communications @gmail.com, verify @microsoft')
-#       # ==> "Confirm your first request for help"
-#     # Step 1 (now)
-#     expect('works for logged or not logged in')
-#     expect('form: corporate domain + credit card')
-#     expect('emailed: set password => @microsoft.com')
-#     expect('check existing accounts / identity')
-#     # Step 2
-#       # ==> case 1 (brand new user) "set your password"
-#       # ==> case 2 (existin user)   "add team members"
-#         # (come back to site) => Choose the financial controller
-#         # (optional) "Link" your Enterpise provider
-#           # Phone to AirPair
-#             # Links connectionName to companyObject in our database
-#             # Which uses we've (communication:verified)
-#             # Teams
-#               # Adm
-#               # Finacial Controller
-#               # Credits Card tokens
-#               # Which slack group
-#         # Invite other team members via AD or email
-#         # Poll the enterprise connection / cut people off no longer employed
-#     # Step 3
-#     expect('team member accepts the invite @microsoft')
-#     # we add userID to the connectName
-#     # Step X
-#     expect('Can ')
-
-
-module.exports = ->
-
-  DESCRIBE("Individuals", individuals)
-  # DESCRIBE("Ors", orgs)

@@ -19,5 +19,5 @@ authd = ->
 
 module.exports = ->
 
-  DESCRIBE("ANNONYMOUS", anon)
-  DESCRIBE("AUTHENTICATED", authd)
+  DESCRIBE("ANON", anon)
+  DESCRIBE("AUTHED", authd)

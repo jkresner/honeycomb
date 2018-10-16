@@ -1,16 +1,16 @@
 users = {
   jj: name: 'Jay', email: "jj@stub.io", push: false
-  jg: name: 'Joe', email: false, push: false 
+  jg: name: 'Joe', email: false, push: false
   jk: name: 'Jon', email: "jony@jon.stub", push: "token123"
 }
 
 
 module.exports = ->
 
-  before ->
 
-    global.cache = 
-      templates: 
+  before ->
+    global.CAL =
+      templates:
         'welcome:smtp':
           from: () -> "Honey <noreply@honey.stub>"
           subject: (data) -> "Welcome #{data.to.name}"
@@ -26,7 +26,7 @@ module.exports = ->
           click: (data) -> "app:uri(activate://#{data.hash})"
 
   after ->
-    delete global.cache
+    delete global.CAL
 
 
   IT "SMTP Send to user", ->
@@ -35,7 +35,7 @@ module.exports = ->
     {jj} = users
     data = hash: 'AAAABBBBCCC'
     COMM.toUser(jj).by({smtp:1}).send('welcome', data)
-      .then (msgs) => 
+      .then (msgs) =>
         r = msgs[0]
         # expect(r.subject).to.exist
         expect(r.subject).to.equal("Welcome Jay")
@@ -50,14 +50,14 @@ module.exports = ->
         expect(mail.messageTo).to.equal('Jay <jj@stub.io>')
         DONE()
 
-  
+
   IT "SES Send to user", ->
     spy1 = STUB.spy(COMM.transports.smtp.api, 'sendMail')
     spy2 = STUB.spy(COMM.transports.ses.api, 'sendMail')
     {jk} = users
     data = hash: 'AAAABBBBDDD'
     COMM.toUser(jk).by({ses:1}).send('activate', data)
-      .then (msgs) => 
+      .then (msgs) =>
         expect(msgs[0].subject).to.exist
         expect(spy1.calledOnce).to.be.false
         expect(spy2.calledOnce).to.be.true
@@ -72,19 +72,19 @@ module.exports = ->
         DONE()
 
 
-  IT "SES and Pushr Send to user", ->         
+  IT "SES and Pushr Send to user", ->
     spy1 = STUB.spy(COMM.transports.smtp.api, 'sendMail')
     spy2 = STUB.spy(COMM.transports.ses.api, 'sendMail')
     spy3 = STUB.spy(COMM.transports.pushr.api, 'send')
     {jk} = users
     data = hash: 'BBBBDDD'
     COMM.toUser(jk).by({ses:1,pushr:1}).send('activate', data)
-      .then (msgs) => 
+      .then (msgs) =>
         expect(msgs[0].subject).to.exist
         expect(msgs[1].click).to.exist
         expect(spy1.calledOnce).to.be.false
         expect(spy2.calledOnce).to.be.true
-        expect(spy3.calledOnce).to.be.true        
+        expect(spy3.calledOnce).to.be.true
         mail = spy2.args[0][0]
         expect(mail.html).inc('<a href="test.hon/activate?token=BBBBDDD')
         expect(mail.key).to.equal('activate:ses')

@@ -6,7 +6,7 @@ module.exports = () =>
     STUB.globals({
       DAL: honey.model.DAL,
       Enum: honey.model.Enum,
-      honey: { util: {
+      honey: { cfg: () => {}, util: {
         String: {camel},
         Object: {renameAttrs:honey.util.Object.renameAttrs}
       } }
