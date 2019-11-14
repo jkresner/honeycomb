@@ -1,6 +1,7 @@
 {
   "mongo": {
-    "collections":        ["users","authors","experts","tags","auths","orders"],
+    "collections":        ["users","authors","experts","tags","auths","orders",
+                           "events","views","impressions","issues"],
     "seed": {
       "without":          "FIXTURE.users.tst1",
       "timeout":          30000
