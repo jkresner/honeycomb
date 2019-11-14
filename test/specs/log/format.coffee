@@ -17,7 +17,7 @@ error = ->
     expect(str1).to.exist
     lns1 = str1.split('\n')
     # console.log(str1, lns1.length, lns1)
-    expect(lns1.length, "lns1 length equal 3").to.equal(3)
+    expect(lns1.length, "lns1 length equal 4").to.equal(4)
     expect(lns1[0]).inc("SyntaxError: Unexpected token }".red)
     DONE()
 
