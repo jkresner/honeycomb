@@ -1,43 +1,17 @@
 module.exports = () =>
 
   before(function() {
-    var conf = {
-      log: {
-        appKey:     'APPTESTK',
-        errors: {
-          mail: {   to: "jk <jk@air.test>,abc <sbc@test.com>",
-                    sender: "ERR <team@test.com>" }
-        }
-      },
-      comm: {
-        mode:       'stub',
-        transports: ['ses','smtp'],
-        sender: {
-          noreply:  { mail: "Honey <noreply@honey.stub>" }
-        }
-      },
-      templates: {
-        dirs:       {},
-        engines:    'hbs,marked' },
-      wrappers: {
-        ses: {
-          accessKeyId: "--",
-          secretAccessKey: "--" },
-        smtp: {
-          "service": "--",
-          "auth": { "user": "--", "pass": "--" }
-        }
-      }
-    }
+    let {log,comm,templates,wrappers} = OPTS.stubConfig
+    let cfg = {log,comm,templates,wrappers}
 
     STUB.globals({
       honey: {
         cfg: () => {},
         log: { issue: data => `${data.e.message} **bold**` },
         logic: { DRY: { id: { new: x => global.ObjectId() } } },
-        templates: require('../../lib/app/templates')(null, conf),
+        templates: require('../../lib/app/templates')(null, cfg),
       },
-      COMM: require('../../lib/comm/index')(conf),
+      COMM: require('../../lib/comm/index')(cfg),
       Wrappers: assign({ pushr: {
         api: { send(msg, cb) { cb(null, msg) } },
         sendGroup(to, msg, opts, cb) {},

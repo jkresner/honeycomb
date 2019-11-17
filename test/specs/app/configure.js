@@ -28,10 +28,6 @@ module.exports = () => {
 
 
   IT('Defaults with barest env vars applied', function() {
-    process.env.AUTH_APPKEY = 'test2'
-    process.env.AUTH_OAUTH_GITHUB_CLIENTID = 'ghtest2'
-    process.env.AUTH_OAUTH_GITHUB_CLIENTSECRET = 'ghtest2-secret'
-    process.env.AUTH_OAUTH_GITHUB_USERAGENT = 'ghtest2-ua'
     process.env.COMM_SENDERS_ERR_EMAIL = 'err@test.com'
     process.env.LOG_APPKEY = 'test2'
     process.env.LOG_ERRORS = '{{undefine}}'
@@ -39,8 +35,6 @@ module.exports = () => {
     process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test2'
     var cfg2 = Configure({}, 'dev')
     expect(cfg2.env).to.equal('dev')
-    expect(cfg2.auth.loginUrl).to.equal('/')
-    expect(cfg2.auth.appKey).to.equal('test2')
     expect(cfg2.http.port).to.equal(3333)
     expect(cfg2.http.host).to.equal('http://localhost:3333')
     expect(cfg2.http.static.dirs[0]).to.inc('/public')
@@ -65,7 +59,7 @@ module.exports = () => {
 
 
   IT('{{undefine}} log.auth section from env var', function() {
-    var appCfg4 = { auth: "{{undefine}}", model: undefined, comm: undefined, middleware: undefined }
+    var appCfg4 = { auth: undefined, model: undefined, comm: undefined, middleware: undefined }
     process.env.LOG_IT_AUTH = '{{undefine}}'
     process.env.LOG_ERRORS = '{{undefine}}'
     process.env.LOG_APPKEY = 'test4'
@@ -103,7 +97,7 @@ module.exports = () => {
 
 
   IT('merge app.json values and sub-section on top of defaults', function() {
-    var appCfg6 = { auth: { oauth: { github: { signup: false } } }, comm: undefined, model: undefined, middleware: undefined, wrappers: { timezone: { key: 'testtime' } } }
+    var appCfg6 = { auth: { oauth: { github: { signup: false } }, token: undefined, password: undefined }, comm: undefined, model: undefined, middleware: undefined, wrappers: { timezone: { key: 'testtime' } } }
     appCfg6.auth.oauth.github.short ='gh'
     appCfg6.auth.oauth.github.login=true
     // appCfg6.auth.oauth.github.signup=true
@@ -115,7 +109,6 @@ module.exports = () => {
     appCfg6.auth.oauth.github.callbackURL='http://localhost:4444/auth/github/callback'
     // appCfg6.auth.oauth.github.scope.length=1
     appCfg6.auth.oauth.github.scope=['user']
-
 
     // expect(cfg2.auth.oauth.github.short).to.equal('gh')
     // expect(cfg2.auth.oauth.github.login).to.equal(true)
@@ -174,7 +167,7 @@ module.exports = () => {
     process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test0'
     process.env.LOG_APPKEY = "{{undefine}}"
     process.env.LOG_ERRORS = "{{undefine}}"
-    var appCfg9 = { auth: { appKey: 'tt', oauth: { github: { unlink: false, relink: true, clientID: 'test', clientSecret: 'test', userAgent: 'tt9' } } }, comm: undefined, model: undefined }
+    var appCfg9 = { auth: { appKey: 'tt', password: undefined, token: undefined, oauth: { github: { unlink: false, relink: true, clientID: 'test', clientSecret: 'test', userAgent: 'tt9' } } }, comm: undefined, model: undefined }
     var cfg9 = Configure(appCfg9, 'dev')
     expect(cfg9.auth.oauth.github.relink).to.equal(true)
     expect(cfg9.auth.oauth.github.unlink).to.equal(false)

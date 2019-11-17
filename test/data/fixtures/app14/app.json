@@ -1,5 +1,4 @@
 {
-  "auth":                  "{{undefine}}",
   "appDir":                "/",
   "comm":                  "{{undefine}}",
   "http": {

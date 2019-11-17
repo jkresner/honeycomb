@@ -16,6 +16,30 @@ OPTS =
   oauth:
     url:               '/auth/test-oauth'
     logic:             'oauth'
+  stubConfig: 
+    log:
+      appKey:              'APPTESTK'
+      errors:  mail: 
+        to:                'jk <jk@air.test>,abc <sbc@test.com>'
+        sender:            'ERR <team@test.com>'
+    comm:
+      mode:              'stub'
+      transports:        ['ses','smtp']
+      sender:
+        noreply:  mail:  'Honey <noreply@honey.stub>'        
+    templates:
+      dirs:              {}
+      engines:           'hbs,marked'
+    wrappers:
+      ses:
+        accessKeyId:     '--'
+        secretAccessKey: '--' 
+      smtp:
+        service:         '--'
+        auth: 
+          user:          '--'
+          pass:          '--' 
+
 
 
 SCREAM(OPTS).run (done) ->

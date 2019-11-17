@@ -45,8 +45,15 @@
       }
     },
     "password": {
-      "signup":              "{{undefine}}",
-      "reset":               "{{undefine}}"
+      "login": {
+        "master":            "shhhhh",
+        "usernameField":     "emails.value",
+        "passwordField":     "auth.password.hash"
+      },
+      "reset": { 
+        "salt":              "{{required}}" 
+      },
+      "signup":              "{{undefine}}"
     }
   },
   "comm":                    "{{undefine}}",

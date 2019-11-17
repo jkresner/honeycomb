@@ -11,6 +11,39 @@ module.exports = ->
           DONE()
 
 
+  it 'Token onetime login fails for non-existing user'
+
+
+  IT 'Token onetime login with existing user', ->
+    {jkc} = FIXTURE.users
+    email = jkc.emails[0].value
+    text = handlebars.compile("""Hi {{to.first}}!\n\n- - -\n\n[magic link]({{url_magic}})""")
+    CAL.templates["user_onetime_login:ses"] = 
+      type : () => "mail"
+      key : () => "user_onetime_login:ses"
+      from : () => "Test <test@honey.test>"
+      subject : () => "Login to Honey"
+      text : text
+      html : (data) => marked(text(data))
+
+    DB.ensureDoc 'User', jkc, (eDB, rDB) ->
+      expect(rDB.emails[0].value).to.equal("jk@climbfind.com")
+      expect(rDB).eqId(jkc)
+      spy = STUB.spy(COMM.transports.ses.api, 'sendMail')
+      PUT "/users/onetime", {email}, (r) ->
+        expect(r).to.exist
+        expect(spy.calledOnce).to.be.true
+        mail = spy.args[0][0]
+        expect(mail.subject).to.equal("Login to Honey")
+        slug = "/auth/ott/#{jkc._id}/"
+        tokenIdx = mail.html.indexOf(slug)+slug.length
+        expect(tokenIdx > -1).to.be.true
+        token = mail.html.substring(tokenIdx).split('">')[0]
+        PAGE "/auth/ott/#{jkc._id}/#{token}", { accept: "text/plain", status: 302 }, (text) ->
+          DONE()    
+
+
+
   IT 'Github login with existing linked.gh match & no extra existing photos or emails', ->
     DB.ensureDoc 'User', FIXTURE.users.tst5, (e, r) ->
       LOGIN 'tst5', (session) ->
