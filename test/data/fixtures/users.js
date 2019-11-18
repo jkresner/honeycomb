@@ -248,7 +248,7 @@ module.exports = {
             "email" : "jk@climbfind.com",
             "picture" : { "data" : {
                     "width" : 480,
-                    "url" : "https://scontent.xx.fbcdn.net/v/t31.0-1/c124.0.480.480/p480x480/1292368_639194289544_253203027_o.jpg?oh=a18860406016fbfbeb283623e05e8597&oe=5AD66FC6",
+                    "url" : "https://scontent.xx.fbcdn.net/v/t31.0-1/c124.0.480.480/p480x480/1292368_639194289544_253203027_o.jpg",
                     "is_silhouette" : false,
                     "height" : 480
                 }
@@ -267,16 +267,10 @@ module.exports = {
     },
     "photos" : [ 
         {
-            "value" : "https://scontent.xx.fbcdn.net/v/t31.0-1/c124.0.480.480/p480x480/1292368_639194289544_253203027_o.jpg?oh=15f31406e3d07facbaacc361482ab1ac&oe=5A383BC6",
+            "value" : "https://scontent.xx.fbcdn.net/v/t31.0-1/c124.0.480.480/p480x480/1292368_639194289544_253203027_o.jpg",
             "type" : "facebook",
             "primary" : true,
             "_id" : ObjectId("597e2f52755541797ea3d8b9")
-        }, 
-        {
-            "primary" : false,
-            "type" : "facebook",
-            "value" : "https://scontent.xx.fbcdn.net/v/t31.0-1/c124.0.480.480/p480x480/1292368_639194289544_253203027_o.jpg?oh=f5f7552ecdb03f1326d651d84b103140&oe=5A5FC8C6",
-            "_id" : ObjectId("59bc0a89b104570004186fee")
         },
     ],
     "emails" : [{
