@@ -1,4 +1,4 @@
-{
+  {
   "appDir":                  "../",
   "auth": {
     "appKey":                "auth-ex1",
@@ -56,7 +56,10 @@
       "signup":              "{{undefine}}"
     }
   },
-  "comm":                    "{{undefine}}",
+  "comm": {
+    "mode":                    "stub",
+    "transports":              ["ses"]
+  },
   "http": {
     "host":                  "localhost",
     "static":                { "favicon": "{{undefine}}" }
@@ -77,9 +80,13 @@
     }
   },
   "model": {
-    "analytics": {
-      "mongoUrl":            "{{required}}"
-    },
     "da":                    ["mongoose","mongo"]
+  },
+  "wrappers": {
+    "ses": {
+      "accessKeyId":         "--",
+      "secretAccessKey":     "--",
+      "region":              "--"
+    }
   }
 }

@@ -41,9 +41,8 @@ OPTS =
           pass:          '--' 
 
 
-
 SCREAM(OPTS).run (done) ->
   {Configure} = require('../lib/index')
-  config = Configure(__dirname+'/app/server', 'test', true)
+  config = Configure(__dirname+'/app/server', 'test')
   config.routes.auth.test = { on: true, login: OPTS.login, oauth: OPTS.oauth }
   require('./app/server/app').run(config, done)

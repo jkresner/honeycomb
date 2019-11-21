@@ -1,10 +1,13 @@
 module.exports = () =>
 
   before(done => {
+    let Comm = require('../../lib/comm/index')
+
     let {log,comm,templates,wrappers} = OPTS.stubConfig
     let cfg = {log,comm,templates,wrappers}
+
     STUB.globals({
-      COMM: require('../../lib/comm/index')(cfg),
+      COMM: new Comm(cfg),
       CAL: { templates: {} }
     })
 
